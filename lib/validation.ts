@@ -116,3 +116,5 @@ export function getAppointmentSchema(type: string) {
       return ScheduleAppointmentSchema;
   }
 }
+
+export const AppointmentFormValidation = getAppointmentSchema("create"); // Example of getting the 'create' schema

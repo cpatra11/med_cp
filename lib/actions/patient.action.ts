@@ -21,7 +21,7 @@ export const createUser = async (user: CreateUserParams) => {
       ID.unique(),
       user.email,
       user.phone,
-
+      undefined,
       user.name
     );
     console.log("New user created:", newUser);
@@ -36,7 +36,7 @@ export const createUser = async (user: CreateUserParams) => {
 
       return existingUser.users[0];
     }
-    console.error("An error occurred while creating a new user:", error);
+    console.error(error);
   }
 };
 export const getUser = async (userId: string) => {
@@ -44,7 +44,7 @@ export const getUser = async (userId: string) => {
     const user = await users.get(userId);
     return parseStringify(user);
   } catch (error) {
-    console.error("An error occurred while fetching user:", error);
+    console.error(error);
     throw error; // Throw the error so it can be handled by the caller
   }
 };
@@ -77,5 +77,26 @@ export const registerPatient = async ({
     return parseStringify(newPatient);
   } catch (error) {
     console.error("An error occurred while registering patient:", error);
+  }
+};
+
+export const getPatient = async (userId: string) => {
+  try {
+    const patients = await databases.listDocuments(
+      DATABASE_ID!,
+      PATIENT_COLLECTION_ID!,
+      [Query.equal("userId", userId)]
+    );
+    console.log("Fetched patients:", patients);
+    const patient = patients.documents[0];
+
+    if (!patient) {
+      throw new Error(`No patient found with userId: ${userId}`);
+    }
+
+    return parseStringify(patient);
+  } catch (error) {
+    console.error("Error in getPatient:", error);
+    throw error; // Throw the error so it can be handled by the caller
   }
 };

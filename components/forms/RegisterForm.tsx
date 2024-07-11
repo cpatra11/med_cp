@@ -38,7 +38,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       ...PatientFormDefaultValues,
       name: "",
       email: "",
-      undefined,
+
       phone: "",
       gender: "Male",
     },
@@ -73,7 +73,7 @@ const RegisterForm = ({ user }: { user: User }) => {
       // @ts-ignore
       const patient = await registerPatient(patientData);
 
-      if (patient) router.push(`/patients/${patient.id}/new-appointment`);
+      if (patient) router.push(`/patients/${patient.$id}/new-appointment`);
     } catch (error) {
       console.error("Error creating user:", error); // Debugging line
     } finally {
