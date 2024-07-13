@@ -5,8 +5,14 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const parseStringify = (value: any) => JSON.parse(JSON.stringify(value));
-
+export const parseStringify = (data) => {
+  try {
+    return JSON.stringify(data);
+  } catch (error) {
+    console.error("Failed to stringify data:", data);
+    throw error;
+  }
+};
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
 // FORMAT DATE TIME

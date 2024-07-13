@@ -1,34 +1,10 @@
-import AppointmentForm from "@/components/forms/AppointmentForm";
-import { getPatient } from "@/lib/actions/patient.action";
 import Image from "next/image";
-import Link from "next/link";
 
-export default async function NewAppointment({
-  params: { userId },
-}: SearchParamProps) {
-  let patient;
-  try {
-    patient = await getPatient(userId);
-  } catch (error) {
-    console.error("Error fetching patient:", error);
-    return (
-      <div className="flex h-screen max-h-screen items-center justify-center">
-        <p className="text-xl text-red-500">
-          Patient not found or an error occurred.
-        </p>
-      </div>
-    );
-  }
+import { AppointmentForm } from "@/components/forms/AppointmentForm";
+import { getPatient } from "@/lib/actions/patient.action";
 
-  if (!patient) {
-    return (
-      <div className="flex h-screen max-h-screen items-center justify-center">
-        <p className="text-xl text-red-500">
-          Patient not found or an error occurred.
-        </p>
-      </div>
-    );
-  }
+const Appointment = async ({ params: { userId } }: SearchParamProps) => {
+  const patient = await getPatient(userId);
 
   return (
     <div className="flex h-screen max-h-screen">
@@ -38,24 +14,29 @@ export default async function NewAppointment({
             src="/assets/icons/logo-full.svg"
             height={1000}
             width={1000}
-            alt="patient"
-            className="mb-12 h-100 w-fit"
+            alt="logo"
+            className="mb-12 h-10 w-fit"
           />
+
           <AppointmentForm
-            type="create"
+            patientId={patient?.$id}
             userId={userId}
-            patientId={patient.$id}
+            type="create"
           />
-          <p className="copyright mt-10 py-4">© 2024 CarePulse</p>
+
+          <p className="copyright mt-10 py-12">© 2024 CarePluse</p>
         </div>
       </section>
+
       <Image
         src="/assets/images/appointment-img.png"
-        height={1000}
-        width={1000}
+        height={1500}
+        width={1500}
         alt="appointment"
         className="side-img max-w-[390px] bg-bottom"
       />
     </div>
   );
-}
+};
+
+export default Appointment;
